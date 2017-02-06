@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { ListView, StyleSheet, Text, View } from 'react-native';
 
-var REQUEST_URL = 'http://tapi/symphox.com.tw/Test/json'
+var REQUEST_URL = 'https://www.googleapis.com/books/v1/volumes?q=subject:fiction'
 
 class theListView extends Component {
   constructor(props) {
     super(props);
     this.state = ({
-      isLoading: true,
+      isLoading: false,
       dataSource: new ListView.DataSource({
         rowHasChanged:(row1, row2) => row1 !== row2
       }),
@@ -15,7 +15,7 @@ class theListView extends Component {
   }
   
   componentDidMount(){
-//     this.fetchData();
+     this.fetchData();
   }
   
   fetchData() {
@@ -23,7 +23,7 @@ class theListView extends Component {
     .then((response) => response.json())
     .then((responseData) => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(responseData),
+        dataSource: this.state.dataSource.cloneWithRows(responseData.items),
         isLoading: false
       });
     })
@@ -43,8 +43,8 @@ class theListView extends Component {
       <View>
         <View style = {styles.container}>
           <View style = {styles.rightContainer}>
-            <Text style = {styles.title}> {data.id} </Text>
-            <Text style = {styles.title}> {data.name} </Text>
+            <Text style = {styles.title}> Title: {data.volumeInfo.title} </Text>
+            <Text style = {styles.title}> Authors: {data.volumeInfo.authors} </Text>
           </View>
         </View>
           <View style = {styles.separator} />
